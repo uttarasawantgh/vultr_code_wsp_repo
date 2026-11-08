@@ -1,6 +1,6 @@
 import os
 import sys
-from nebius_tools.client import NebiusTokenFactoryClient
+from vultr_tools.client import NebiusTokenFactoryClient
 
 class CodeAuditor:
     """

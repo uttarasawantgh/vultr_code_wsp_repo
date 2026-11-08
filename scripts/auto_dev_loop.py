@@ -7,7 +7,7 @@ from dotenv import load_dotenv
 load_dotenv()
 
 # Import the Nebius client we just created
-from nebius_tools.client import NebiusTokenFactoryClient
+from vultr_tools.client import NebiusTokenFactoryClient
 
 def run_pytest():
     """Executes pytest against the test suite and captures the result."""
@@ -20,8 +20,8 @@ def run_pytest():
     return result.returncode == 0, result.stdout + "\n" + result.stderr
 
 def main():
-    if not os.getenv("NEBIUS_API_KEY"):
-        print("[!] Error: NEBIUS_API_KEY environment variable is missing. Check your .env file.")
+    if not os.getenv("VULTR_SERVERLESS_INFERENCE_API_KEY"):
+        print("[!] Error: VULTR_SERVERLESS_INFERENCE_API_KEY environment variable is missing. Check your .env file.")
         sys.exit(1)
 
     nebius = NebiusTokenFactoryClient()

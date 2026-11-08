@@ -1,5 +1,26 @@
-openai>=1.0.0
-anthropic>=0.30.0
-streamlit>=1.30.0
-pytest>=7.0.0
+# VultrGuard AI - Edge AI Governance & Autonomous Refactoring
+# Python Dependencies for Hybrid DGX Spark + Vultr Serverless Inference Pipeline
+
+# Core Web & UI Framework
+streamlit>=1.35.0
+
+# LLM & API Clients
+openai>=1.20.0
+anthropic>=0.25.0
+requests>=2.31.0
+
+# Deep Learning & Weight-Space Programming (WSP)
+torch>=2.2.0
+numpy>=1.26.0
+
+# NeMo Switchyard Routing Engine
+# Note: Ensure local switchyard wheel/package is available in environment
+# switchyard
+
+# Testing & Code Audit Verification
+pytest>=7.4.0
+pytest-asyncio>=0.23.0
+
+# Environment & Utilities
 python-dotenv>=1.0.0
+pydantic>=2.6.0

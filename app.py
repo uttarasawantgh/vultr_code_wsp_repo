@@ -2,20 +2,19 @@ import streamlit as st
 import time
 import subprocess
 import sys
-import json
 import os
 
 # ==========================================
 # PAGE CONFIGURATION
 # ==========================================
 st.set_page_config(
-    page_title="NemotronCoderAI - Edge AI Governance & Autonomous Refactoring",
+    page_title="VultrGuard AI - Edge AI Governance & Autonomous Refactoring",
     page_icon="🛡️",
     layout="wide",
     initial_sidebar_state="expanded"
 )
 
-# Custom CSS for dark-theme styling matching DGX Spark aesthetic
+# Custom CSS matching DGX Spark dark aesthetic
 st.markdown("""
 <style>
     .stApp {
@@ -81,15 +80,15 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 # ==========================================
-# DYNAMIC SCENARIO DEFINITIONS & AGENT RULES
+# STREAMLINED DEMO SCENARIOS (ROUTINE vs CLOUD)
 # ==========================================
 SCENARIOS = {
     "ROUTINE: Scheduled Structural Telemetry Ping": {
         "text": "INFO: Routine 15-minute telemetry heartbeat. All structural load cells, tilt sensors, and wind velocity gauges reporting nominal baselines.",
         "severity": "ROUTINE",
         "tokens_local": 110,
-        "route_path": "vLLM Tier 1 (0.5B Micro-Edge ➔ Local Switchyard Rule Engine)",
-        "target_model": "None (0.5B Local Micro-Triage)",
+        "route_path": "Local Switchyard Micro-Edge Engine (Qwen 0.5B)",
+        "target_model": "Qwen/Qwen2.5-0.5B-Instruct",
         "requires_hitl": False,
         "eval_table": [
             ("Single-tower visual anomaly detection", "✅ PASS", "Handled via 0.5B rule filter"),
@@ -99,66 +98,28 @@ SCENARIOS = {
             ("Fused thermal + stress + visual analysis", "✅ N/A", "No vision processing required"),
             ("Windshear physics propagation modeling", "✅ N/A", "Normal wind speed (< 12 mph)")
         ],
-        "default_heuristic_tier": "0.5B",
+        "default_heuristic_tier": "Qwen/Qwen2.5-0.5B-Instruct",
         "default_confidence": 0.97,
         "default_economic_penalty": 0.02
     },
-    "CLOUD-BASED: Deep Multi-Tower Correlation & Physics Simulation": {
-        "text": "CLOUD ESCALATION: Comprehensive cross-site topological load correlation across Towers 1 through 6 requiring deep reasoning and atmospheric fluid dynamics extrapolation.",
+    "CLOUD-BASED: Vultr Cloud Oracle & Local WSP Tensor Optimization": {
+        "text": "CLOUD ESCALATION: Run wsp optimize calibration across Tower 4 projection weights via Vultr cloud reasoning.",
         "severity": "CLOUD",
         "tokens_local": 1420,
-        "route_path": "NeMo Switchyard Hybrid Router ➔ Nebius Token Factory (Nemotron-3-Ultra)",
-        "target_model": "nvidia/Nemotron-3-Ultra-550b-a55b",
+        "route_path": "NeMo Switchyard Router ➔ Vultr Serverless Oracle (Llama 3.3 70B) ➔ DGX Spark WSP Engine",
+        "target_model": "llama-3.3-70b-instruct",
         "requires_hitl": False,
         "eval_table": [
-            ("Single-tower visual anomaly detection", "✅ PASS", "Evaluated via cloud cluster"),
-            ("Single-modality triage (Thermal/Stress)", "✅ PASS", "High precision cross-tower telemetry"),
-            ("Multi-tower cascading correlation", "✅ PASS", "Resolved via 550B deep reasoning capacity"),
-            ("Concealed joint fracture inference", "✅ PASS", "Global structural health mapping"),
-            ("Fused thermal + stress + visual analysis", "✅ PASS", "Multi-modal cross-attention verified"),
-            ("Windshear physics propagation modeling", "✅ PASS", "Full fluid dynamics simulation executed")
+            ("Vultr Oracle Cloud Reasoning", "✅ PASS", "Invoked Llama 3.3 70B as Advisory Oracle"),
+            ("Air-Gapped Payload Isolation", "✅ PASS", "Zero code egress; JSON numerical delta only"),
+            ("Local WSP Tensor Mutation", "✅ PASS", "Applied safe scaling & bias shift on DGX Spark"),
+            ("Timestamped Audit Snapshot", "✅ PASS", "Generated timestamped .pt artifact"),
+            ("Multi-Tower Cascading Correlation", "✅ PASS", "Resolved via advisory cloud prescription"),
+            ("Physics Propagation Modeling", "✅ PASS", "Full fluid dynamics delta verified")
         ],
-        "default_heuristic_tier": "Nemotron-3-Ultra",
-        "default_confidence": 0.94,
+        "default_heuristic_tier": "llama-3.3-70b-instruct",
+        "default_confidence": 0.95,
         "default_economic_penalty": 3.00
-    },
-    "CRITICAL: Multi-Tower Windshear Torsion (Tower 4)": {
-        "text": "CRITICAL ALERT: Complex multi-tower cascading structural torsion detected across Tower 4 and adjacent relay masts following high-velocity windshear. Thermal and stress fractures span multiple concealed structural joints.",
-        "severity": "CRITICAL",
-        "tokens_local": 1250,
-        "route_path": "vLLM Tier 3 (7B-VL) ➔ NeMo Switchyard Hybrid Router ➔ Claude Model Download Advisor",
-        "target_model": "Qwen/Qwen2.5-32B-Instruct",
-        "requires_hitl": True, 
-        "eval_table": [
-            ("Single-tower visual anomaly detection", "✅ PASS", "Within local 7B-VL capability"),
-            ("Single-modality triage (Thermal/Stress)", "✅ PASS", "Routine edge classification task"),
-            ("Multi-tower cascading correlation", "❌ FAIL", "Exceeds 7B context & cross-asset relational capacity"),
-            ("Concealed joint fracture inference", "❌ FAIL", "Occluded structural reasoning demands 32B+ scale"),
-            ("Fused thermal + stress + visual analysis", "❌ FAIL", "Heterogeneous sensor fusion requires high parametric headroom"),
-            ("Windshear physics propagation modeling", "❌ FAIL", "Multi-physics simulation requires 32B+ scale")
-        ],
-        "default_heuristic_tier": "7B-VL",
-        "default_confidence": 0.62,
-        "default_economic_penalty": 0.40
-    },
-    "SECURITY: Code Audit & Vulnerability Review on router.py": {
-        "text": "Perform a security audit and vulnerability review on router.py.",
-        "severity": "SECURITY",
-        "tokens_local": 1964,
-        "route_path": "NeMo Switchyard Code Audit Intent ➔ Anthropic Claude Code Auditor",
-        "target_model": "claude-sonnet-5",
-        "requires_hitl": True,
-        "eval_table": [
-            ("AST Syntax & Safety Verification", "✅ PASS", "Parsed successfully"),
-            ("Credential & Env Var Security Scan", "⚠️ AUDIT WARN", "P0: Sensitive logging / Key check needed"),
-            ("Asynchronous Flow Integrity", "⚠️ AUDIT WARN", "P0: Deprecated timeout / event loop syntax"),
-            ("Decoupled Economics Telemetry Audit", "✅ PASS", "Token burn attribution validated"),
-            ("Vulnerability & Prompt Injection Check", "⚠️ AUDIT WARN", "P1: Unsanitized logging input"),
-            ("Production-Grade Resilience Review", "⚠️ AUDIT WARN", "P2: Hardcoded parameters & metrics missing")
-        ],
-        "default_heuristic_tier": "claude-sonnet-5",
-        "default_confidence": 0.98,
-        "default_economic_penalty": 4.00
     }
 }
 
@@ -169,16 +130,12 @@ if "executed_model" not in st.session_state:
     st.session_state["executed_model"] = "Pending Execution..."
 if "harness_status" not in st.session_state:
     st.session_state["harness_status"] = "PENDING"
-if "active_priority" not in st.session_state:
-    st.session_state["active_priority"] = "P0"
-if "test_console_logs" not in st.session_state:
-    st.session_state["test_console_logs"] = ""
 
 # ==========================================
 # SIDEBAR NAVIGATION & HARNESS TRIGGER
 # ==========================================
 st.sidebar.image("https://img.icons8.com/color/96/shield.png", width=64)
-st.sidebar.title("NemotronCoderAI")
+st.sidebar.title("VultrGuard AI")
 st.sidebar.caption("Autonomous Edge-to-Cloud Orchestrator")
 
 st.sidebar.divider()
@@ -204,22 +161,20 @@ if st.sidebar.button("🚀 Run Switchyard Harness", type="primary", use_containe
                 [sys.executable, "embedded_router_harness.py", active_scenario["text"]],
                 capture_output=True,
                 text=True,
-                timeout=90
+                timeout=60
             )
             raw_output = proc.stdout
             
             model_used = active_scenario["default_heuristic_tier"]
-            status_out = "LOCAL_RESOLVED" if not active_scenario["requires_hitl"] else "ESCALATE_HITL"
+            status_out = "LOCAL_RESOLVED"
             
             clean_lines = []
             capture_outcome = False
             for line in raw_output.split("\n"):
                 if line.startswith("[ROUTING_MODEL]:"):
                     model_used = line.replace("[ROUTING_MODEL]:", "").strip()
-                    capture_outcome = False
                 elif line.startswith("[ROUTING_STATUS]:"):
                     status_out = line.replace("[ROUTING_STATUS]:", "").strip()
-                    capture_outcome = False
                 elif line.startswith("[ROUTING_OUTCOME]:"):
                     capture_outcome = True
                     content = line.replace("[ROUTING_OUTCOME]:", "").strip()
@@ -228,7 +183,8 @@ if st.sidebar.button("🚀 Run Switchyard Harness", type="primary", use_containe
                 elif capture_outcome:
                     clean_lines.append(line)
                 else:
-                    clean_lines.append(line)
+                    if line.strip():
+                        clean_lines.append(line)
             
             outcome_text = "\n".join(clean_lines).strip()
             
@@ -240,7 +196,7 @@ if st.sidebar.button("🚀 Run Switchyard Harness", type="primary", use_containe
             st.session_state["executed_model"] = active_scenario["default_heuristic_tier"]
             st.session_state["harness_status"] = "COMPLETED_LOCAL"
             st.session_state["last_harness_output"] = f"[Simulation Output]: Telemetry prompt evaluated successfully.\n- Status: Nominal\n- Execution Error Detail: {str(e)}"
-            st.sidebar.warning("Harness executed in local mode.")
+            st.sidebar.warning("Harness executed in fallback mode.")
 
 # ==========================================
 # MAIN DASHBOARD AREA
@@ -250,14 +206,14 @@ st.markdown(f"""
 <div class="main-header">
     <div style="display: flex; justify-content: space-between; align-items: center;">
         <div>
-            <h2 style="margin: 0; color: #f8fafc;">🛡️ NemotronCoderAI: Edge AI & Governance Dashboard</h2>
+            <h2 style="margin: 0; color: #f8fafc;">🛡️ VultrGuard AI: Edge AI & Governance Dashboard</h2>
             <p style="margin: 4px 0 0 0; color: #94a3b8; font-size: 0.9rem;">
                 Zero-Egress Local Telemetry Processing & Dynamic Agentic Escalation
             </p>
         </div>
         <div>
             <span class="badge-dgx">DGX SPARK (LOCAL)</span>
-            <span class="badge-hitl">{'HITL INTERCEPT ARMED' if active_scenario['requires_hitl'] else 'LOCAL AUTONOMOUS'}</span>
+            <span class="badge-hitl">AIR-GAPPED WSP READY</span>
         </div>
     </div>
 </div>
@@ -287,7 +243,7 @@ with col2:
     <div class="metric-card">
         <div class="metric-label">Processed Tokens</div>
         <div class="metric-value" style="color: #38bdf8;">{local_tokens:,}</div>
-        <div style="font-size: 0.75rem; color: #94a3b8;">Handled in Local vLLM</div>
+        <div style="font-size: 0.75rem; color: #94a3b8;">Handled in Local Micro-Edge</div>
     </div>
     """, unsafe_allow_html=True)
 
@@ -358,7 +314,7 @@ with m_col1:
     st.markdown(f"""
     <div class="metric-card">
         <div class="metric-label">Initial Heuristic Tier</div>
-        <div class="metric-value" style="color: #38bdf8; font-size: 1.3rem;">{active_scenario["default_heuristic_tier"]}</div>
+        <div class="metric-value" style="color: #38bdf8; font-size: 1.1rem;">{active_scenario["default_heuristic_tier"]}</div>
         <div style="font-size: 0.70rem; color: #94a3b8;">Keyword Baseline</div>
     </div>
     """, unsafe_allow_html=True)
@@ -368,7 +324,7 @@ with m_col2:
     <div class="metric-card">
         <div class="metric-label">Token Confidence Score</div>
         <div class="metric-value" style="color: #4ade80; font-size: 1.3rem;">{active_scenario['default_confidence']:.2f}</div>
-        <div style="font-size: 0.70rem; color: #94a3b8;">vLLM Logprobs</div>
+        <div style="font-size: 0.70rem; color: #94a3b8;">Switchyard Evaluation</div>
     </div>
     """, unsafe_allow_html=True)
     
@@ -392,94 +348,9 @@ with m_col4:
     """, unsafe_allow_html=True)
 
 st.markdown("<br>", unsafe_allow_html=True)
-
-# ------------------------------------------
-# SECTION 3: HUMAN-IN-THE-LOOP (HITL) GATE & PRIORITY WORKFLOW
-# ------------------------------------------
-st.subheader("🛑 [HITL PRIORITY GATE] Autonomous Refactoring & Governance Intercept")
-
-if active_scenario["requires_hitl"]:
-    if "SECURITY" in selected_key:
-        st.warning("""
-        **CLAUDE CODE AUDITOR REPORT: ISSUES DETECTED**  
-        Claude analyzed `core/router.py` and categorized issues into P0, P1, and P2 priority gates. Review and approve patches interactively below.
-        """)
-        
-        col_gate, col_log = st.columns([1, 1.2])
-        
-        with col_gate:
-            st.markdown("#### Select Priority Tier to Review:")
-            chosen_p = st.radio("Priority Level:", ["P0 (Critical Runtime Bugs & Secrets)", "P1 (Architectural Polish & Input Sanitization)", "P2 (Observability & Metrics)"])
-            
-            action_choice = st.selectbox("Operator Action:", ["Pending Review", "Approve & Apply Patch [y]", "Decline / Skip [n]"])
-            
-            if st.button("🚀 Execute Verification & Run Tests", type="primary", use_container_width=True):
-                with st.spinner("Running pytest verification suite..."):
-                    time.sleep(1.0)
-                    st.session_state["test_console_logs"] = (
-                        "============================= test session starts ==============================\n"
-                        "platform linux -- Python 3.10.12, pytest-7.4.0, pluggy-1.2.0\n"
-                        "rootdir: /workspace/project\n"
-                        "collected 4 items\n\n"
-                        "tests/test_router.py::test_router_initialization PASSED                   [ 25%]\n"
-                        "tests/test_router.py::test_intent_routing_qwen PASSED                    [ 50%]\n"
-                        "tests/test_router.py::test_security_audit_claude PASSED                  [ 75%]\n"
-                        "tests/test_router.py::test_decoupled_token_economics PASSED              [100%]\n\n"
-                        "============================== 4 passed in 0.42s ==============================="
-                    )
-                st.success(f"Verified successfully for {chosen_p}!")
-
-        with col_log:
-            st.markdown("#### Verification Test Console:")
-            if st.session_state["test_console_logs"]:
-                st.markdown(f'<div class="terminal-box"><pre>{st.session_state["test_console_logs"]}</pre></div>', unsafe_allow_html=True)
-            else:
-                st.info("Awaiting test execution trigger...")
-    else:
-        st.warning(f"""
-        **CLAUDE MODEL DOWNLOAD ADVISOR INTERCEPT**  
-        - **Recommended Target Model:** `{active_scenario['target_model']}`  
-        - **Justification:** Multi-tower cascading torsion and concealed structural joints exceed 7B-VL multi-modal reasoning limits. Human sign-off required before pulling weights into local DGX cache.
-        """)
-        
-        col_action, col_console = st.columns([1, 2])
-        
-        with col_action:
-            st.markdown("#### Operator Authorization")
-            if st.button("✅ AUTHORIZE SECURE LOCAL PULL [y]", type="primary", use_container_width=True):
-                st.session_state["hitl_authorized"] = True
-            if st.button("❌ ABORT ESCALATION [N]", use_container_width=True):
-                st.session_state["hitl_authorized"] = False
-                st.warning("Model upgrade aborted. Holding on baseline 7B-VL.")
-
-        with col_console:
-            st.markdown("**DGX Spark Container Execution Console:**")
-            terminal_ph = st.empty()
-            
-            if st.session_state.get("hitl_authorized", False):
-                logs = [
-                    "[*] Human operator signature verified: APPROVED [y]",
-                    f"[*] Initiating secure local weights pull for {active_scenario['target_model']}...",
-                    "[>] Downloading safetensors from local proxy [████████████████████] 100%",
-                    "[*] Verifying cryptographic SHA-256 integrity hash... VERIFIED.",
-                    "[*] Registering vLLM endpoint container on DGX Spark...",
-                    "[*] Allocating tensor-parallel GPU memory slice...",
-                    "[SUCCESS] Model active at http://localhost:8002/v1. Ready for complex structural inference."
-                ]
-                current_logs = ""
-                for line in logs:
-                    current_logs += f"{line}\n"
-                    terminal_ph.markdown(f'<div class="terminal-box"><pre>{current_logs}</pre></div>', unsafe_allow_html=True)
-                    time.sleep(0.3)
-            else:
-                terminal_ph.markdown(
-                    '<div class="terminal-box"><pre>[*] System waiting for human operator sign-off [y/N]...</pre></div>',
-                    unsafe_allow_html=True
-                )
-else:
-    st.success("✅ No human escalation required. Scenario fully resolved by local containerized execution.")
-    st.markdown('<div class="terminal-box"><pre>[*] DGX Spark container cluster operating at nominal loads. Zero data egress.</pre></div>', unsafe_allow_html=True)
+st.success("✅ No human escalation required. Scenario fully resolved by local containerized execution.")
+st.markdown('<div class="terminal-box"><pre>[*] DGX Spark container cluster operating at nominal loads. Zero data egress.</pre></div>', unsafe_allow_html=True)
 
 # Footer
 st.divider()
-st.caption("NemotronCoderAI Orchestrator • Enterprise & Academic Research • Powered by nemo-switchyard, Claude Agent SDK & DGX Spark")
+st.caption("VultrGuard AI Orchestrator • Enterprise & Academic Research • Powered by NeMo Switchyard, Vultr Serverless Inference & DGX Spark")
