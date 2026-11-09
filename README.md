@@ -53,6 +53,7 @@ Watch the complete demonstration and technical walkthrough on YouTube:
 
 This project builds upon and extends concepts from the foundational architecture established in:
 * **Baseline Repo**: [uttarasawantgh/nebius_nemo_auto_code_repo](https://github.com/uttarasawantgh/nebius_nemo_auto_code_repo)
+* Takehi, R., Teoh, J., Zhang, A., & Khattab, O. (2026, November 2). Sparks of weight-space programming: LLMs can natively read & write neural network weights. Rikiya Takehi's Blog. https://rikiyat.github.io/blog/weight-space-programming/
 
 ---
 
